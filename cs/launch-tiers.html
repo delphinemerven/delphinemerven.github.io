@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creative Services — Launch Tiers</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #0B0B14;
+    color: #F8F8F8;
+    min-height: 100vh;
+    padding: 48px 40px;
+  }
+
+  /* Header */
+  .page-header {
+    margin-bottom: 48px;
+  }
+  .page-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #757575;
+    margin-bottom: 12px;
+  }
+  .page-title {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 48px;
+    letter-spacing: -0.02em;
+    color: #F8F8F8;
+    margin-bottom: 8px;
+  }
+  .page-subtitle {
+    font-size: 16px;
+    color: #757575;
+    font-weight: 400;
+  }
+
+  /* Tier grid: header row + 3 tiers */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid #2C2C2C;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  /* Column header cells */
+  .col-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #2C2C2C;
+  }
+  .col-header-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #616161;
+    margin-bottom: 4px;
+  }
+  .col-header.tier-1 { }
+  .col-header.tier-2 { }
+  .col-header.tier-3 { }
+  .col-header-blank { border-bottom: 1px solid #2C2C2C; padding: 20px 24px; }
+
+  .tier-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+  .tier-badge.t1 { background: rgba(255,255,255,0.07); color: #ACACAC; }
+  .tier-badge.t2 { background: rgba(255,255,255,0.07); color: #ACACAC; }
+  .tier-badge.t3 { background: rgba(255,255,255,0.07); color: #ACACAC; }
+
+  .tier-name {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    color: #F8F8F8;
+  }
+
+  /* Row label cells */
+  .row-label {
+    padding: 20px 24px;
+    border-bottom: 1px solid #2C2C2C;
+    border-right: 1px solid #2C2C2C;
+    background: #111118;
+  }
+  .row-label:last-child { border-bottom: none; }
+  .row-label-text {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #757575;
+  }
+
+  /* Data cells */
+  .cell {
+    padding: 20px 24px;
+    border-bottom: 1px solid #2C2C2C;
+    border-right: 1px solid #2C2C2C;
+    font-size: 14px;
+    color: #CBCBCB;
+    line-height: 22px;
+  }
+  .cell:last-child { border-right: none; }
+  .cell.no-border-bottom { border-bottom: none; }
+
+  /* Row grouping */
+  .tier-row { display: contents; }
+  .tier-row .cell:nth-child(2) { border-right: 1px solid #2C2C2C; }
+
+  /* Within cells */
+  .cell-list { list-style: none; }
+  .cell-list li {
+    padding: 3px 0;
+    color: #CBCBCB;
+    font-size: 14px;
+  }
+  .cell-list li::before {
+    content: "—";
+    color: #424242;
+    margin-right: 8px;
+  }
+
+  .cell-stat {
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: #F8F8F8;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .cell-stat-label {
+    font-size: 12px;
+    color: #757575;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 2px 3px 2px 0;
+    letter-spacing: 0.04em;
+    background: #1E1E2C;
+    color: #ACACAC;
+  }
+  .tag.copy { background: rgba(156,163,175,0.12); color: #9CA3AF; }
+  .tag.design { background: rgba(129,140,248,0.12); color: #818CF8; }
+  .tag.web { background: rgba(73,17,216,0.12); color: #A488EB; }
+  .tag.web-teal { background: rgba(78,176,179,0.12); color: #4EB0B3; }
+  .tag.web-yellow { background: rgba(252,186,46,0.12); color: #FCBA2E; }
+
+  /* Example releases */
+  .examples-section {
+    margin-top: 0;
+  }
+  .examples-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #616161;
+    margin-bottom: 20px;
+  }
+  .examples-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid #2C2C2C;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .product-row-label {
+    padding: 20px 16px;
+    background: #111118;
+    border-right: 1px solid #2C2C2C;
+    border-bottom: 1px solid #2C2C2C;
+    display: flex;
+    align-items: center;
+  }
+  .product-row-label:last-of-type,
+  .product-row-label.last { border-bottom: none; }
+
+  .product-row-label-text {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .product-row-label-text.cdraw { color: #A488EB; }
+  .product-row-label-text.wzip { color: #FCBA2E; }
+  .product-row-label-text.mm { color: #4EB0B3; }
+
+  .example-card-wrap {
+    padding: 12px;
+    border-right: 1px solid #2C2C2C;
+    border-bottom: 1px solid #2C2C2C;
+  }
+  .example-card-wrap.no-border-right { border-right: none; }
+  .example-card-wrap.no-border-bottom { border-bottom: none; }
+  .example-card-wrap.empty { background: #0D0D1A; }
+
+  .example-card {
+    background: #111118;
+    border: 1px solid #2C2C2C;
+    border-radius: 8px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .example-card.cdraw::before { background: #4911D8; }
+  .example-card.wzip::before { background: #FCBA2E; }
+  .example-card.mm::before { background: #4EB0B3; }
+
+  .example-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .example-product {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .example-product.cdraw { color: #A488EB; }
+  .example-product.wzip { color: #FCBA2E; }
+  .example-product.mm { color: #4EB0B3; }
+
+  .example-tier-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .dot-t1 { background: #757575; }
+  .dot-t2 { background: #757575; }
+  .dot-t3 { background: #757575; }
+
+  .example-tier-label {
+    font-size: 11px;
+    color: #757575;
+    letter-spacing: 0.04em;
+  }
+
+  .example-release {
+    font-size: 16px;
+    font-weight: 700;
+    color: #F8F8F8;
+    margin-bottom: 16px;
+  }
+
+  .example-bars {
+    margin-bottom: 12px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 10px;
+  }
+  .bar-label {
+    font-size: 11px;
+    color: #757575;
+    width: 40px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: #1E1E2C;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .bar-count {
+    font-size: 12px;
+    color: #616161;
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .example-total {
+    font-size: 13px;
+    color: #757575;
+    padding-top: 10px;
+    border-top: 1px solid #1E1E2C;
+  }
+  .example-total strong {
+    color: #F8F8F8;
+    font-weight: 700;
+  }
+
+  .example-note {
+    font-size: 12px;
+    color: #616161;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* Tier color indicators on row labels */
+  .row-label { vertical-align: top; }
+
+  hr.section-divider {
+    border: none;
+    border-top: 1px solid #1E1E2C;
+    margin: 40px 0;
+  }
+
+  .footnote {
+    font-size: 12px;
+    color: #424242;
+    margin-top: 32px;
+    line-height: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-label">Creative Services — Internal Reference</div>
+  <h1 class="page-title">Launch Tiers</h1>
+  <p class="page-subtitle">What each tier entails — scope, people, time, and channels</p>
+</div>
+
+<!-- TIER DEFINITION TABLE -->
+<div class="tier-grid">
+
+  <!-- Header row -->
+  <div class="col-header-blank"></div>
+
+  <div class="col-header tier-1">
+    <div class="tier-badge t1">Tier 1</div>
+    <div class="tier-name">Full Launch</div>
+  </div>
+  <div class="col-header tier-2">
+    <div class="tier-badge t2">Tier 2</div>
+    <div class="tier-name">Standard Release</div>
+  </div>
+  <div class="col-header tier-3">
+    <div class="tier-badge t3">Tier 3</div>
+    <div class="tier-name">Lightweight</div>
+  </div>
+
+  <!-- Scope -->
+  <div class="row-label"><span class="row-label-text">Scope</span></div>
+  <div class="cell">
+    Full multi-channel campaign across pre-launch, launch, and post-launch phases. Includes new or rebuilt web pages, SKUs/buy links, multiple eDM series, campaign copy and creative, PR, social, paid media, channel and affiliate assets, packaging, in-product assets (IPM, IPP, installer), and Amazon content sets.
+  </div>
+  <div class="cell">
+    Core web updates and select channel assets. Typically includes product page(s), SKUs/buy links, redirects, affiliate or channel banners, IPM, and supporting copy. No full campaign, no major page rebuild.
+  </div>
+  <div class="cell">
+    Technical web updates only — SKUs/buy links, redirects, page includes, download links. No new content creation, no design, no copy.
+  </div>
+
+  <!-- Channels -->
+  <div class="row-label"><span class="row-label-text">Channels</span></div>
+  <div class="cell">
+    <span class="tag">Web</span>
+    <span class="tag">Email</span>
+    <span class="tag">Paid Media</span>
+    <span class="tag">Social</span>
+    <span class="tag">PR</span>
+    <span class="tag">Affiliate</span>
+    <span class="tag">Channel / Reseller</span>
+    <span class="tag">Amazon</span>
+    <span class="tag">In-Product</span>
+    <span class="tag">Digital Direct</span>
+  </div>
+  <div class="cell">
+    <span class="tag">Web</span>
+    <span class="tag">Email</span>
+    <span class="tag">Affiliate</span>
+    <span class="tag">Channel / Reseller</span>
+    <span class="tag">In-Product</span>
+    <span class="tag">Digital Direct</span>
+  </div>
+  <div class="cell">
+    <span class="tag">Web</span>
+    <span class="tag">Digital Direct</span>
+  </div>
+
+  <!-- CS Team Involved -->
+  <div class="row-label"><span class="row-label-text">CS Team</span></div>
+  <div class="cell">
+    <ul class="cell-list">
+      <li>Project Manager</li>
+      <li>Web Producer (2)</li>
+      <li>Designer (2)</li>
+      <li>Copywriter</li>
+      <li>Senior Director</li>
+    </ul>
+  </div>
+  <div class="cell">
+    <ul class="cell-list">
+      <li>Project Manager</li>
+      <li>Web Producer</li>
+      <li>Designer</li>
+      <li>Copywriter</li>
+    </ul>
+  </div>
+  <div class="cell">
+    <ul class="cell-list">
+      <li>Project Manager</li>
+      <li>Web Producer</li>
+    </ul>
+  </div>
+
+  <!-- Cross-functional -->
+  <div class="row-label"><span class="row-label-text">Cross-Functional</span></div>
+  <div class="cell">
+    PMM (lead), Product, SEO/Growth, Analytics, Digital Direct, PR, Channel/Reseller team, Affiliate team, Amazon/marketplace team
+  </div>
+  <div class="cell">
+    PMM (lead), Analytics, Digital Direct, Channel/Reseller team, Affiliate team
+  </div>
+  <div class="cell">
+    PMM or requester, Digital Direct
+  </div>
+
+  <!-- Lead time -->
+  <div class="row-label"><span class="row-label-text">Lead Time</span></div>
+  <div class="cell"><div class="cell-stat">12–16 wks</div></div>
+  <div class="cell"><div class="cell-stat">8–12 wks</div></div>
+  <div class="cell"><div class="cell-stat">3–4 wks</div></div>
+
+  <!-- Typical CS request volume -->
+  <div class="row-label" style="border-bottom:none"><span class="row-label-text">Typical CS Requests</span></div>
+  <div class="cell no-border-bottom"><div class="cell-stat">50–100+</div><div class="cell-stat-label">across copy, design, web</div></div>
+  <div class="cell no-border-bottom"><div class="cell-stat">10–50</div><div class="cell-stat-label">across copy, design, web</div></div>
+  <div class="cell no-border-bottom"><div class="cell-stat">&lt;10</div><div class="cell-stat-label">primarily web</div></div>
+
+</div>
+
+
+<!-- EXAMPLE RELEASES -->
+<hr class="section-divider">
+<div class="examples-section">
+  <div class="examples-label">Past Releases — Tier Mapping</div>
+  <div class="examples-grid">
+
+    <!-- CorelDRAW row -->
+    <div class="product-row-label">
+      <span class="product-row-label-text cdraw">CorelDRAW</span>
+    </div>
+
+    <!-- CorelDRAW Mar 2026 -->
+    <div class="example-card-wrap">
+      <div class="example-card cdraw">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t1"></span><span class="example-tier-label">Tier 1 — Full Launch</span>
+        </div>
+        <div class="example-release">March 2026</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:2%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">2</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:31%; background:#818CF8;"></div></div>
+            <span class="bar-count">33</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:67%; background:#A488EB;"></div></div>
+            <span class="bar-count">70</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>105</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- CorelDRAW Sep 2025 -->
+    <div class="example-card-wrap">
+      <div class="example-card cdraw">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t2"></span><span class="example-tier-label">Tier 2 — Standard Release</span>
+        </div>
+        <div class="example-release">September 2025</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:10%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">2</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:33%; background:#84DDDA;"></div></div>
+            <span class="bar-count">7</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:57%; background:#4EB0B3;"></div></div>
+            <span class="bar-count">12</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>21</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- CorelDRAW Sep 2024 -->
+    <div class="example-card-wrap no-border-right">
+      <div class="example-card cdraw">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t1"></span><span class="example-tier-label">Tier 1 — Full Launch</span>
+        </div>
+        <div class="example-release">September 2024</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:10%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">7</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:31%; background:#818CF8;"></div></div>
+            <span class="bar-count">21</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:50%; background:#A488EB;"></div></div>
+            <span class="bar-count">34</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>68</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- WinZip row -->
+    <div class="product-row-label">
+      <span class="product-row-label-text wzip">WinZip</span>
+    </div>
+
+    <!-- WinZip Sep 2025 -->
+    <div class="example-card-wrap">
+      <div class="example-card wzip">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t3"></span><span class="example-tier-label">Tier 3 — Lightweight</span>
+        </div>
+        <div class="example-release">September 2025</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:0%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">0</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:0%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">0</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:100%; background:#FCBA2E;"></div></div>
+            <span class="bar-count">4</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>4</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- WinZip Sep 2024 -->
+    <div class="example-card-wrap">
+      <div class="example-card wzip">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t2"></span><span class="example-tier-label">Tier 2 — Standard Release</span>
+        </div>
+        <div class="example-release">September 2024</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:3%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">1</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:31%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">10</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:66%; background:#FCBA2E;"></div></div>
+            <span class="bar-count">21</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>32</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- WinZip empty cell -->
+    <div class="example-card-wrap no-border-right empty"></div>
+
+    <!-- MindManager row -->
+    <div class="product-row-label no-border-bottom">
+      <span class="product-row-label-text mm">MindManager</span>
+    </div>
+
+    <!-- MindManager Sep 2025 -->
+    <div class="example-card-wrap no-border-bottom">
+      <div class="example-card mm">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t2"></span><span class="example-tier-label">Tier 2 — Standard Release</span>
+        </div>
+        <div class="example-release">September 2025</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:14%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">2</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:7%; background:#84DDDA;"></div></div>
+            <span class="bar-count">1</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:79%; background:#4EB0B3;"></div></div>
+            <span class="bar-count">11</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>14</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- MindManager Sep 2024 -->
+    <div class="example-card-wrap no-border-bottom">
+      <div class="example-card mm">
+        <div class="example-meta">
+          <span class="example-tier-dot dot-t2"></span><span class="example-tier-label">Tier 2 — Standard Release</span>
+        </div>
+        <div class="example-release">September 2024</div>
+        <div class="example-bars">
+          <div class="bar-row">
+            <span class="bar-label">Copy</span>
+            <div class="bar-track"><div class="bar-fill" style="width:18%; background:#9CA3AF;"></div></div>
+            <span class="bar-count">6</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Design</span>
+            <div class="bar-track"><div class="bar-fill" style="width:15%; background:#84DDDA;"></div></div>
+            <span class="bar-count">5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Web</span>
+            <div class="bar-track"><div class="bar-fill" style="width:68%; background:#4EB0B3;"></div></div>
+            <span class="bar-count">23</span>
+          </div>
+        </div>
+        <div class="example-total"><strong>34</strong> CS requests</div>
+      </div>
+    </div>
+
+    <!-- MindManager empty cell -->
+    <div class="example-card-wrap no-border-right no-border-bottom empty"></div>
+
+  </div>
+</div>
+
+<p class="footnote">Creative Services · Internal use only · Request volume is indicative, not definitive — tier is determined by scope and channels, not count alone.</p>
+
+</body>
+</html>
